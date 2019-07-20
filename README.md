@@ -16,6 +16,8 @@ All that aside, hopefully you find this interesting and/or useful.
 
 I followed the [Lets Encrypt localhost Guide](https://letsencrypt.org/docs/certificates-for-localhost/) and put the certs in a `certs/` folder in the root of this project.
 
+Currently, Rocket does not appear to be able to configure TLS for just dev and to let a different service provide SSL termination in production. The repository is in the production state so that it can be automatically deployed to Heroku. For local dev, uncomment the line that adds the `tls` feature to Rocket.
+
 ## SameSite Lax v. Strict
 
 Firefox was not sending the cookies for the initial redirect, which caused the page to show the login section. Since a refresh worked, the auth flow had succeeded. I could not find any documentation as to why the cookies were not forwarded, but I suspected that it was due to a security policy. After a good amount of searching and testing, I figured out that the issue was related to [this bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1465402).
