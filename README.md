@@ -1,5 +1,7 @@
 # Rocket-OAuth-GitHub-Demo
 
+[Deployed on Heroku here](https://rocket-oauth-github-demo.herokuapp.com/)
+
 This project followed the [GitHub Rails OAuth Guide](https://developer.github.com/v3/guides/basics-of-authentication/), but in Rust using the Rocket framework. The end result is a simple web application that requests access to a GitHub user's information and displays it.
 
 My goal was to become more familiar with how to use OAuth to create applications that are secure and that don't require direct password management/storage. The application does not concern itself with consuming the actual API beyond getting the user's information, but it would not be too difficult to extend the example to use the token on the authenticated user.
