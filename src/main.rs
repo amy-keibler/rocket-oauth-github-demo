@@ -8,11 +8,13 @@ extern crate askama;
 extern crate serde;
 
 use rocket::fairing::AdHoc;
-use rocket::http::{Cookie, Cookies, SameSite};
+use rocket::http::{Cookie, Cookies, SameSite, Status};
 use rocket::response::Redirect;
 use rocket::State;
 
 use rocket_contrib::serve::StaticFiles;
+
+use failure::Error;
 
 use log::error;
 
@@ -23,7 +25,9 @@ mod auth;
 use auth::{authenticate, OauthAppCredentials};
 
 mod templates;
-use templates::{IndexTemplate, LoggedInIndexTemplate};
+use templates::{IndexTemplate, LoggedInIndexTemplate, RepositoriesTemplate};
+
+mod api;
 
 #[get("/", rank = 1)]
 fn logged_in_homepage(user: AuthenticatedUser) -> LoggedInIndexTemplate {
@@ -61,11 +65,29 @@ fn log_out(_user: AuthenticatedUser, mut cookies: Cookies) -> Redirect {
     Redirect::to("/")
 }
 
+#[get("/repositories", rank = 1)]
+fn list_repositories(user: AuthenticatedUser) -> Result<RepositoriesTemplate, Error> {
+    let repositories = api::retrieve_repositories(&user)?;
+    Ok(RepositoriesTemplate { user, repositories })
+}
+
+#[get("/repositories", rank = 2)]
+fn unauth_repositories() -> Status {
+    Status::Unauthorized
+}
+
 fn main() {
     rocket::ignite()
         .mount(
             "/",
-            routes![homepage, logged_in_homepage, auth_callback, log_out],
+            routes![
+                homepage,
+                logged_in_homepage,
+                auth_callback,
+                log_out,
+                list_repositories,
+                unauth_repositories
+            ],
         )
         .mount(
             "/",

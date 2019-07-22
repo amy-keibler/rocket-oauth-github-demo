@@ -4,12 +4,15 @@
         <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
     </head>
     <body>
-        <h1>Logged In</h1>
-        <div><strong>Name:</strong> {{ user.user_name }}</div>
-        {% if !user.user_image.is_empty() -%}
-        <div><img width="50px" src="{{ user.user_image }}"></div>
-        {%- endif %}
-        <div><a href="/repositories">View My Repositories</a></div>
+        <h1>{{ user.user_name }}'s Repositories</h1>
+        {% if !repositories.is_empty() %}
+        <ul>
+            {% for repository in repositories %}
+            <li><a href="{{ repository.html_url }}">{{ repository.full_name }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div><a href="/">Home</a></div>
         <div><a href="/logout">Log Out</a></div>
         <div><a href="https://github.com/amy-keibler/rocket-oauth-github-demo">View the Source on GitHub</a></div>
     </body>
