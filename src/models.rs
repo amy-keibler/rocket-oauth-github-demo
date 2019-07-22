@@ -1,4 +1,5 @@
 use failure::{format_err, Error};
+use reqwest::RequestBuilder;
 use rocket::request::{FromRequest, Outcome, Request};
 use serde::{Deserialize, Serialize};
 
@@ -19,6 +20,15 @@ impl AuthenticatedUser {
             user_image,
         }
     }
+
+    pub fn send_authenticated_request(
+        &self,
+        request: RequestBuilder,
+    ) -> reqwest::Result<reqwest::Response> {
+        request
+            .header("Authorization", String::from("token ") + &self.github_token)
+            .send()
+    }
 }
 
 impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
@@ -37,4 +47,10 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
             Err(_) => Outcome::Forward(()),
         }
     }
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Repository {
+    pub full_name: String,
+    pub html_url: String,
 }
