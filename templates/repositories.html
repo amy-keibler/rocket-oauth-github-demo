@@ -1,19 +1,17 @@
-<html>
-    <head>
-        <title>Rocket OAuth GitHub Demo: Authenticated</title>
-        <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
-    </head>
-    <body>
-        <h1>{{ user.user_name }}'s Repositories</h1>
-        {% if !repositories.is_empty() %}
-        <ul>
-            {% for repository in repositories %}
-            <li><a href="{{ repository.html_url }}">{{ repository.full_name }}</a></li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        <div><a href="/">Home</a></div>
-        <div><a href="/logout">Log Out</a></div>
-        <div><a href="https://github.com/amy-keibler/rocket-oauth-github-demo">View the Source on GitHub</a></div>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}{{ user.user_name }}'s Repositories{% endblock %}
+
+{% block header %}{{ user.user_name }}'s Repositories{% endblock %}
+
+{% block content %}
+{% if !repositories.is_empty() %}
+<ul>
+    {% for repository in repositories %}
+    <li><a href="{{ repository.html_url }}">{{ repository.full_name }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div><a href="/">Home</a></div>
+<div><a href="/logout">Log Out</a></div>
+{% endblock %}

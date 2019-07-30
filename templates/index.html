@@ -1,11 +1,9 @@
-<html>
-    <head>
-        <title>Rocket OAuth GitHub Demo</title>
-        <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
-    </head>
-    <body>
-        <h1>Log In Via GitHub OAuth</h1>
-        <a href="https://github.com/login/oauth/authorize?scope=read:user&client_id={{ client_id }}">Log in</a>
-        <div><a href="https://github.com/amy-keibler/rocket-oauth-github-demo">View the Source on GitHub</a></div>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Log In Via GitHub OAuth{% endblock %}
+
+{% block header %}Log In Via GitHub OAuth{% endblock %}
+
+{% block content %}
+<a href="https://github.com/login/oauth/authorize?scope=read:user&client_id={{ client_id }}">Log in</a>
+{% endblock %}
