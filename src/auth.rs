@@ -25,10 +25,8 @@ struct GitHubUser {
     gravatar_id: Option<String>,
 }
 
-pub fn authenticate<'a>(
-    code: String,
-    creds: &OauthAppCredentials,
-) -> Result<AuthenticatedUser, Error> {
+#[allow(clippy::or_fun_call)]
+pub fn authenticate(code: String, creds: &OauthAppCredentials) -> Result<AuthenticatedUser, Error> {
     let mut headers = HeaderMap::new();
     headers.insert(ACCEPT, HeaderValue::from_static("application/json"));
 
@@ -56,7 +54,7 @@ pub fn authenticate<'a>(
                 let user: Result<GitHubUser, _> = res.json();
 
                 if let Ok(user) = user {
-                    return Ok(AuthenticatedUser::new(
+                    Ok(AuthenticatedUser::new(
                         user.email.unwrap_or_default(),
                         auth.access_token,
                         user.name,
@@ -65,7 +63,7 @@ pub fn authenticate<'a>(
                                 .gravatar_id
                                 .map(|id| format!("https://www.gravatar.com/avatar/{}", id)))
                             .unwrap_or_default(),
-                    ));
+                    ))
                 } else {
                     bail!("Couldn't get user: {:?}", user);
                 }
