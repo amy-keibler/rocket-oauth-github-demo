@@ -17,7 +17,7 @@ pub fn retrieve_repositories(user: &AuthenticatedUser) -> Result<Vec<Repository>
     match response {
         Ok(mut response) => {
             let repositories: Vec<Repository> = response.json()?;
-            return Ok(repositories);
+            Ok(repositories)
         }
         Err(e) => bail!(
             "Could not retrieve repositories for {}: {}",

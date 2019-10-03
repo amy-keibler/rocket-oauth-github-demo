@@ -39,7 +39,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for AuthenticatedUser {
             .cookies()
             .get_private("github_user")
             .map(|u| u.value().to_owned())
-            .ok_or(format_err!("github_user cookie not present"))
+            .ok_or_else(|| format_err!("github_user cookie not present"))
             .and_then(|github_user| serde_json::from_str(&github_user).map_err(|e| e.into()));
 
         match github_user {
